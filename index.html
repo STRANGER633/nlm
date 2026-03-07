@@ -8,58 +8,73 @@
 
 <style>
 
+/* PAGE BACKGROUND */
+
+/* PAGE BACKGROUND */
+
 body{
 font-family:Arial, Helvetica, sans-serif;
 margin:0;
-background:#faf9ff;
+background:linear-gradient(135deg,#dcdcdc,#bfbfbf);
+min-height:100vh;
 }
 
-/* HERO */
+/* TITLE */
+
+.title{
+text-align:center;
+margin-top:40px;
+font-size:42px;
+color:black;
+}
+
+.subtitle{
+text-align:center;
+margin-bottom:30px;
+font-size:18px;
+color:#333;
+}
+
+/* FLOATING SEARCH BAR */
 
 .hero{
-text-align:center;
-padding:60px 20px;
-background:linear-gradient(135deg,#7c6cff,#b9a9ff);
-color:white;
+
+position:sticky;
+top:0;
+
+display:flex;
+justify-content:center;
+
+padding:15px;
+
+background:rgba(255,255,255,0.55);
+
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+
+border-bottom:1px solid rgba(255,255,255,0.4);
+
+z-index:1000;
 }
 
-.hero h1{
-font-size:42px;
-margin-bottom:10px;
-}
-
-.hero p{
-font-size:18px;
-margin-bottom:25px;
-}
+/* SEARCH BAR */
 
 #searchBar{
-width:60%;
-max-width:500px;
-padding:14px;
+
+width:65%;
+max-width:650px;
+
+padding:16px 20px;
+
+border-radius:14px;
 border:none;
-border-radius:10px;
+outline:none;
+
+background:rgba(255,255,255,0.75);
+
+backdrop-filter:blur(10px);
+
 font-size:16px;
-}
-
-/* CATEGORY FILTER */
-
-.categories{
-text-align:center;
-margin-top:20px;
-}
-
-.categories button{
-padding:8px 14px;
-margin:4px;
-border:none;
-border-radius:6px;
-background:white;
-cursor:pointer;
-}
-
-.categories button:hover{
-background:#eee;
 }
 
 /* GRID */
@@ -71,19 +86,31 @@ gap:25px;
 padding:40px;
 }
 
-/* CARD */
+/* GLASS CARD */
 
 .card{
-background:white;
+
+background:rgba(255,255,255,0.6);
+
+backdrop-filter:blur(15px);
+-webkit-backdrop-filter:blur(15px);
+
 border-radius:16px;
+
+box-shadow:0 8px 32px rgba(0,0,0,0.15);
+
 overflow:hidden;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-transition:0.3s;
+
+transition:all 0.3s ease;
+
+border:1px solid rgba(255,255,255,0.4);
 }
 
 .card:hover{
-transform:translateY(-6px);
+transform:translateY(-6px) scale(1.02);
 }
+
+/* THUMB */
 
 .thumb{
 height:180px;
@@ -95,36 +122,191 @@ height:100%;
 object-fit:cover;
 }
 
+/* CARD TEXT */
+
 .cardContent{
 padding:20px;
 }
 
 .cardContent h3{
-margin-bottom:10px;
+font-size:22px;
+margin-bottom:15px;
+color:black;
 }
 
-.meta{
-font-size:14px;
-color:#777;
-margin-bottom:15px;
-}
+/* BUTTONS */
 
 .buttons button,
 .buttons a{
+
 padding:8px 14px;
+
+border-radius:8px;
+
 border:none;
-border-radius:6px;
-background:#7c6cff;
-color:white;
-text-decoration:none;
+
+background:rgba(255,255,255,0.5);
+
+backdrop-filter:blur(6px);
+
+color:black;
+
 cursor:pointer;
+
+text-decoration:none;
+
 font-size:14px;
+
 margin-right:6px;
+
+transition:0.2s;
 }
 
 .buttons button:hover,
 .buttons a:hover{
-background:#5c4cff;
+background:rgba(255,255,255,0.85);
+}
+
+/* FLOATING GLASS HEADER */
+
+.hero{
+
+position:sticky;
+top:0;
+
+text-align:center;
+
+padding:25px 20px;
+
+background:rgba(255,255,255,0.55);
+
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+
+border-bottom:1px solid rgba(255,255,255,0.4);
+
+z-index:1000;
+}
+
+.hero h1{
+font-size:34px;
+margin-bottom:6px;
+color:black;
+}
+
+.hero p{
+font-size:16px;
+margin-bottom:15px;
+color:#222;
+}
+
+/* SEARCH BAR */
+
+#searchBar{
+width:60%;
+max-width:500px;
+padding:14px 18px;
+
+border-radius:12px;
+border:none;
+outline:none;
+
+background:rgba(255,255,255,0.7);
+
+backdrop-filter:blur(10px);
+
+font-size:16px;
+}
+
+/* GRID */
+
+#pptContainer{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:25px;
+padding:40px;
+}
+
+/* GLASS CARDS */
+
+.card{
+
+background:rgba(255,255,255,0.6);
+
+backdrop-filter:blur(15px);
+-webkit-backdrop-filter:blur(15px);
+
+border-radius:16px;
+
+box-shadow:0 8px 32px rgba(0,0,0,0.15);
+
+overflow:hidden;
+
+transition:all 0.3s ease;
+
+border:1px solid rgba(255,255,255,0.4);
+}
+
+.card:hover{
+transform:translateY(-6px) scale(1.02);
+box-shadow:0 12px 40px rgba(0,0,0,0.25);
+}
+
+/* THUMB */
+
+.thumb{
+height:180px;
+}
+
+.thumb img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+/* CONTENT */
+
+.cardContent{
+padding:20px;
+}
+
+.cardContent h3{
+font-size:22px;
+margin-bottom:15px;
+color:black;
+}
+
+/* BUTTONS */
+
+.buttons button,
+.buttons a{
+
+padding:8px 14px;
+
+border-radius:8px;
+
+border:none;
+
+background:rgba(255,255,255,0.5);
+
+backdrop-filter:blur(6px);
+
+color:black;
+
+cursor:pointer;
+
+text-decoration:none;
+
+font-size:14px;
+
+margin-right:6px;
+
+transition:0.2s;
+}
+
+.buttons button:hover,
+.buttons a:hover{
+background:rgba(255,255,255,0.85);
 }
 
 </style>
@@ -135,18 +317,14 @@ background:#5c4cff;
 <section class="hero">
 
 <h1>NLM Presentation Library</h1>
-<p>Browse and download presentations</p>
+
 
 <input
 type="text"
 id="searchBar"
 placeholder="Search presentations..."
-onkeyup="filterPPT()"
+onkeyup="searchPPT()"
 />
-
-<div class="categories" id="categoryButtons">
-<button onclick="setCategory('All')">All</button>
-</div>
 
 </section>
 
@@ -158,37 +336,25 @@ const username="STRANGER633";
 const repo="nlm";
 const folder="files";
 
-let currentCategory="All";
-
 const container=document.getElementById("pptContainer");
-const categoryButtons=document.getElementById("categoryButtons");
 
 async function loadPPTs(){
 
 const url=`https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
 
-const res=await fetch(url);
-const data=await res.json();
-
-let categories=new Set();
+const response=await fetch(url);
+const data=await response.json();
 
 data.forEach(file=>{
 
 if(file.name.endsWith(".ppt") || file.name.endsWith(".pptx")){
 
-let parts=file.name.replace(".pptx","").replace(".ppt","").split("_");
+let title=file.name.replace(".pptx","").replace(".ppt","");
 
-let category=parts[0];
-let title=parts.slice(1).join(" ");
+let div=document.createElement("div");
+div.className="card";
 
-categories.add(category);
-
-let card=document.createElement("div");
-card.className="card";
-card.dataset.category=category.toLowerCase();
-card.dataset.title=title.toLowerCase();
-
-card.innerHTML=`
+div.innerHTML=`
 
 <div class="thumb">
 <img src="opengraph-image.png">
@@ -197,10 +363,6 @@ card.innerHTML=`
 <div class="cardContent">
 
 <h3>${title}</h3>
-
-<div class="meta">
-Category: ${category}
-</div>
 
 <div class="buttons">
 
@@ -215,62 +377,15 @@ Category: ${category}
 </div>
 `;
 
-container.appendChild(card);
+container.appendChild(div);
 
 }
 
 });
-
-createCategoryButtons(categories);
 
 }
 
 loadPPTs();
-
-function createCategoryButtons(categories){
-
-categories.forEach(cat=>{
-
-let btn=document.createElement("button");
-btn.innerText=cat;
-btn.onclick=()=>setCategory(cat);
-
-categoryButtons.appendChild(btn);
-
-});
-
-}
-
-function setCategory(cat){
-
-currentCategory=cat;
-filterPPT();
-
-}
-
-function filterPPT(){
-
-let search=document.getElementById("searchBar").value.toLowerCase();
-
-let cards=document.querySelectorAll(".card");
-
-cards.forEach(card=>{
-
-let title=card.dataset.title;
-let category=card.dataset.category;
-
-let matchTitle=title.includes(search);
-let matchCategory=currentCategory==="All" || category===currentCategory.toLowerCase();
-
-if(matchTitle && matchCategory){
-card.style.display="block";
-}else{
-card.style.display="none";
-}
-
-});
-
-}
 
 function viewPPT(url){
 
@@ -285,6 +400,25 @@ function presentPPT(url){
 window.open(
 "https://view.officeapps.live.com/op/view.aspx?src="+encodeURIComponent(url)
 );
+
+}
+
+function searchPPT(){
+
+let input=document.getElementById("searchBar").value.toLowerCase();
+let cards=document.querySelectorAll(".card");
+
+cards.forEach(card=>{
+
+let title=card.querySelector("h3").innerText.toLowerCase();
+
+if(title.includes(input)){
+card.style.display="block";
+}else{
+card.style.display="none";
+}
+
+});
 
 }
 
