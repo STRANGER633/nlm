@@ -36,11 +36,30 @@ margin-bottom:25px;
 #searchBar{
 width:60%;
 max-width:500px;
-padding:14px 18px;
+padding:14px;
 border:none;
 border-radius:10px;
 font-size:16px;
-outline:none;
+}
+
+/* CATEGORY FILTER */
+
+.categories{
+text-align:center;
+margin-top:20px;
+}
+
+.categories button{
+padding:8px 14px;
+margin:4px;
+border:none;
+border-radius:6px;
+background:white;
+cursor:pointer;
+}
+
+.categories button:hover{
+background:#eee;
 }
 
 /* GRID */
@@ -81,7 +100,6 @@ padding:20px;
 }
 
 .cardContent h3{
-font-size:22px;
 margin-bottom:10px;
 }
 
@@ -91,11 +109,8 @@ color:#777;
 margin-bottom:15px;
 }
 
-/* BUTTONS */
-
 .buttons button,
 .buttons a{
-
 padding:8px 14px;
 border:none;
 border-radius:6px;
@@ -126,8 +141,12 @@ background:#5c4cff;
 type="text"
 id="searchBar"
 placeholder="Search presentations..."
-onkeyup="searchPPT()"
+onkeyup="filterPPT()"
 />
+
+<div class="categories" id="categoryButtons">
+<button onclick="setCategory('All')">All</button>
+</div>
 
 </section>
 
@@ -135,29 +154,41 @@ onkeyup="searchPPT()"
 
 <script>
 
-const username = "STRANGER633";
-const repo = "nlm";
-const folder = "files";
+const username="STRANGER633";
+const repo="nlm";
+const folder="files";
 
-const container = document.getElementById("pptContainer");
+let currentCategory="All";
+
+const container=document.getElementById("pptContainer");
+const categoryButtons=document.getElementById("categoryButtons");
 
 async function loadPPTs(){
 
-const url = `https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
+const url=`https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
 
-const response = await fetch(url);
-const data = await response.json();
+const res=await fetch(url);
+const data=await res.json();
 
-data.forEach(file => {
+let categories=new Set();
+
+data.forEach(file=>{
 
 if(file.name.endsWith(".ppt") || file.name.endsWith(".pptx")){
 
-let title = file.name.replace(".pptx","").replace(".ppt","");
+let parts=file.name.replace(".pptx","").replace(".ppt","").split("_");
 
-let div = document.createElement("div");
-div.className="card";
+let category=parts[0];
+let title=parts.slice(1).join(" ");
 
-div.innerHTML = `
+categories.add(category);
+
+let card=document.createElement("div");
+card.className="card";
+card.dataset.category=category.toLowerCase();
+card.dataset.title=title.toLowerCase();
+
+card.innerHTML=`
 
 <div class="thumb">
 <img src="opengraph-image.png">
@@ -168,7 +199,7 @@ div.innerHTML = `
 <h3>${title}</h3>
 
 <div class="meta">
-PPT Presentation
+Category: ${category}
 </div>
 
 <div class="buttons">
@@ -182,23 +213,69 @@ PPT Presentation
 </div>
 
 </div>
-
 `;
 
-container.appendChild(div);
+container.appendChild(card);
 
+}
+
+});
+
+createCategoryButtons(categories);
+
+}
+
+loadPPTs();
+
+function createCategoryButtons(categories){
+
+categories.forEach(cat=>{
+
+let btn=document.createElement("button");
+btn.innerText=cat;
+btn.onclick=()=>setCategory(cat);
+
+categoryButtons.appendChild(btn);
+
+});
+
+}
+
+function setCategory(cat){
+
+currentCategory=cat;
+filterPPT();
+
+}
+
+function filterPPT(){
+
+let search=document.getElementById("searchBar").value.toLowerCase();
+
+let cards=document.querySelectorAll(".card");
+
+cards.forEach(card=>{
+
+let title=card.dataset.title;
+let category=card.dataset.category;
+
+let matchTitle=title.includes(search);
+let matchCategory=currentCategory==="All" || category===currentCategory.toLowerCase();
+
+if(matchTitle && matchCategory){
+card.style.display="block";
+}else{
+card.style.display="none";
 }
 
 });
 
 }
 
-loadPPTs();
-
 function viewPPT(url){
 
 window.open(
-"https://view.officeapps.live.com/op/embed.aspx?src=" + encodeURIComponent(url)
+"https://view.officeapps.live.com/op/embed.aspx?src="+encodeURIComponent(url)
 );
 
 }
@@ -206,27 +283,8 @@ window.open(
 function presentPPT(url){
 
 window.open(
-"https://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(url)
+"https://view.officeapps.live.com/op/view.aspx?src="+encodeURIComponent(url)
 );
-
-}
-
-function searchPPT(){
-
-let input = document.getElementById("searchBar").value.toLowerCase();
-let cards = document.querySelectorAll(".card");
-
-cards.forEach(card => {
-
-let title = card.querySelector("h3").innerText.toLowerCase();
-
-if(title.includes(input)){
-card.style.display="block";
-}else{
-card.style.display="none";
-}
-
-});
 
 }
 
