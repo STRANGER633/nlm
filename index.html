@@ -184,25 +184,27 @@ let frame=document.getElementById("pptViewer");
 
 viewer.style.display="block";
 
-frame.src="https://view.officeapps.live.com/op/embed.aspx?src="+window.location.origin+"/"+file;
+let url="https://YOUR-USERNAME.github.io/nlm/"+file;
+
+frame.src="https://view.officeapps.live.com/op/embed.aspx?src="+encodeURIComponent(url);
 
 }
 
 function presentPPT(file){
 
-let url="https://view.officeapps.live.com/op/view.aspx?src="+window.location.origin+"/"+file+"&wdSlideShow=true";
+let url="https://YOUR-USERNAME.github.io/nlm/"+file;
 
-window.open(url,"_blank");
+window.open(
+"https://view.officeapps.live.com/op/view.aspx?src="+encodeURIComponent(url)+"&wdSlideShow=true",
+"_blank"
+);
 
 }
-
-document.getElementById("searchInput").addEventListener("keypress",function(e){
-if(e.key==="Enter") searchFiles();
-});
 
 searchFiles();
 
 </script>
 
 </body>
+
 </html>
