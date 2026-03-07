@@ -128,50 +128,45 @@ border-radius:10px;
 
 <script>
 
-const pptDatabase=[
+const username="STRANGER633";
+const repo="nlm";
+const folder="files";
 
-{title:"Cloud Computing",file:"files/cloud_computing.pptx"},
-{title:"Cyber Security",file:"files/cyber_security.pptx"},
-{title:"Network Security",file:"files/network_security.pptx"},
-{title:"Ethical Hacking",file:"files/ethical_hacking.pptx"}
+async function loadFiles(){
 
-];
+const api=`https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
 
-function searchFiles(){
+const response=await fetch(api);
+const data=await response.json();
 
-let query=document.getElementById("searchInput").value.toLowerCase();
 let resultsDiv=document.getElementById("results");
-
 resultsDiv.innerHTML="";
 
-let results;
+data.forEach(file=>{
 
-if(query===""){
-results=pptDatabase;
-}else{
-results=pptDatabase.filter(item =>
-item.title.toLowerCase().includes(query)
-);
-}
+if(file.name.endsWith(".ppt") || file.name.endsWith(".pptx")){
 
-results.forEach(item=>{
+let title=file.name
+.replace(".pptx","")
+.replace(".ppt","")
+.replaceAll("_"," ");
 
 let div=document.createElement("div");
 div.className="card";
 
 div.innerHTML=`
+<h3>${title}</h3>
 
-<h3>${item.title}</h3>
+<button onclick="viewPPT('${file.name}')">View</button>
 
-<button onclick="viewPPT('${item.file}')">View</button>
+<button onclick="presentPPT('${file.name}')">Present</button>
 
-<button onclick="presentPPT('${item.file}')">Present</button>
-
-<a href="${item.file}" download>Download</a>
-
+<a href="files/${file.name}" download>Download</a>
 `;
 
 resultsDiv.appendChild(div);
+
+}
 
 });
 
@@ -184,7 +179,7 @@ let frame=document.getElementById("pptViewer");
 
 viewer.style.display="block";
 
-let url="https://STRANGER633.github.io/nlm/"+file;
+let url=`https://STRANGER633.github.io/nlm/files/${file}`;
 
 frame.src="https://view.officeapps.live.com/op/embed.aspx?src="+encodeURIComponent(url);
 
@@ -192,7 +187,7 @@ frame.src="https://view.officeapps.live.com/op/embed.aspx?src="+encodeURICompone
 
 function presentPPT(file){
 
-let url="https://STRANGER633.github.io/nlm/"+file;
+let url=`https://STRANGER633.github.io/nlm/files/${file}`;
 
 window.open(
 "https://view.officeapps.live.com/op/view.aspx?src="+encodeURIComponent(url)+"&wdSlideShow=true",
@@ -201,9 +196,10 @@ window.open(
 
 }
 
-searchFiles();
+loadFiles();
 
 </script>
 
 </body>
 </html>
+
