@@ -113,7 +113,7 @@ border-radius:10px;
 <p class="subtitle">PPT Library</p>
 
 <div class="searchBox">
-<input id="searchInput" placeholder="Search presentations...">
+<input id="searchInput" placeholder="Search presentations..." onekeyup="searchFiles()">
 <button onclick="searchFiles()">Search</button>
 </div>
 
@@ -128,9 +128,11 @@ border-radius:10px;
 
 <script>
 
-const username="STRANGER633";
+const username="stranger633";
 const repo="nlm";
 const folder="files";
+
+let pptFiles=[];
 
 async function loadFiles(){
 
@@ -139,12 +141,20 @@ const api=`https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
 const response=await fetch(api);
 const data=await response.json();
 
+pptFiles = data.filter(file =>
+file.name.endsWith(".ppt") || file.name.endsWith(".pptx")
+);
+
+displayFiles(pptFiles);
+
+}
+
+function displayFiles(files){
+
 let resultsDiv=document.getElementById("results");
 resultsDiv.innerHTML="";
 
-data.forEach(file=>{
-
-if(file.name.endsWith(".ppt") || file.name.endsWith(".pptx")){
+files.forEach(file=>{
 
 let title=file.name
 .replace(".pptx","")
@@ -166,9 +176,19 @@ div.innerHTML=`
 
 resultsDiv.appendChild(div);
 
+});
+
 }
 
-});
+function searchFiles(){
+
+let query=document.getElementById("searchInput").value.toLowerCase();
+
+let filtered = pptFiles.filter(file =>
+file.name.toLowerCase().includes(query)
+);
+
+displayFiles(filtered);
 
 }
 
@@ -179,7 +199,7 @@ let frame=document.getElementById("pptViewer");
 
 viewer.style.display="block";
 
-let url=`https://STRANGER633.github.io/nlm/files/${file}`;
+let url=`https://stranger633.github.io/nlm/files/${file}`;
 
 frame.src="https://view.officeapps.live.com/op/embed.aspx?src="+encodeURIComponent(url);
 
@@ -187,7 +207,7 @@ frame.src="https://view.officeapps.live.com/op/embed.aspx?src="+encodeURICompone
 
 function presentPPT(file){
 
-let url=`https://STRANGER633.github.io/nlm/files/${file}`;
+let url=`https://stranger633.github.io/nlm/files/${file}`;
 
 window.open(
 "https://view.officeapps.live.com/op/view.aspx?src="+encodeURIComponent(url)+"&wdSlideShow=true",
@@ -199,7 +219,7 @@ window.open(
 loadFiles();
 
 </script>
-
 </body>
 </html>
+
 
