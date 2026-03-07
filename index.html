@@ -15,20 +15,21 @@ font-family:Segoe UI, sans-serif;
 
 body{
 min-height:100vh;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+background:linear-gradient(135deg,#ffffff,#e6ddff,#cbb6ff);
 display:flex;
 justify-content:center;
 padding:40px;
-color:white;
+color:#2d1b69;
 }
 
 .container{
-width:900px;
-background:rgba(255,255,255,0.08);
+width:100%;
+max-width:1400px;
+background:rgba(255,255,255,0.8);
 backdrop-filter:blur(12px);
 border-radius:20px;
 padding:40px;
-box-shadow:0 10px 40px rgba(0,0,0,0.4);
+box-shadow:0 10px 40px rgba(0,0,0,0.1);
 }
 
 h1{
@@ -59,55 +60,36 @@ color:white;
 }
 
 button{
-padding:10px 15px;
+padding:10px 16px;
 border:none;
-border-radius:6px;
-background:#00c6ff;
+border-radius:8px;
+background:#7b5cff;
 color:white;
 cursor:pointer;
+font-weight:500;
+}
+
+button:hover{
+background:#5f43e9;
 }
 
 #results{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:25px;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:30px;
 margin-top:30px;
 }
 
 .card{
-background:rgba(255,255,255,0.08);
-border-radius:14px;
-overflow:hidden;
-transition:0.3s;
-cursor:pointer;
-}
-
-.card:hover{
-transform:scale(1.05);
-box-shadow:0 10px 25px rgba(0,0,0,0.5);
-}
-
-.thumb{
-height:140px;
-background:linear-gradient(135deg,#00c6ff,#0072ff);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-font-weight:bold;
-}
-
-.cardContent{
-padding:15px;
+background:rgba(255,255,255,0.1);
+padding:20px;
+border-radius:12px;
 }
 
 .cardContent h3{
-font-size:16px;
-margin-bottom:10px;
-}
-
-.card h3{
-margin-bottom:10px;
+font-size:20px;
+font-weight:600;
+margin-bottom:12px;
 }
 
 .card button, .card a{
@@ -139,7 +121,7 @@ border-radius:10px;
 <p class="subtitle">PPT Library</p>
 
 <div class="searchBox">
-<input id="searchInput" placeholder="Search presentations..." onekeyup="searchFiles()">
+<input id="searchInput" placeholder="Search presentations...">
 <button onclick="searchFiles()">Search</button>
 </div>
 
@@ -153,12 +135,27 @@ border-radius:10px;
 </div>
 
 <script>
+/* FUTURE FEATURE: CATEGORIES
 
+Example structure if needed later:
+
+files/
+ ├ cybersecurity/
+ ├ cloud/
+ ├ networking/
+
+Code idea:
+
+if(file.path.includes("cybersecurity")){
+ category="Cyber Security";
+}
+
+displayCategory(category);
+
+*/
 const username="stranger633";
 const repo="nlm";
 const folder="files";
-
-let pptFiles=[];
 
 async function loadFiles(){
 
@@ -167,20 +164,12 @@ const api=`https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
 const response=await fetch(api);
 const data=await response.json();
 
-pptFiles = data.filter(file =>
-file.name.endsWith(".ppt") || file.name.endsWith(".pptx")
-);
-
-displayFiles(pptFiles);
-
-}
-
-function displayFiles(files){
-
 let resultsDiv=document.getElementById("results");
 resultsDiv.innerHTML="";
 
-files.forEach(file=>{
+data.forEach(file=>{
+
+if(file.name.endsWith(".ppt") || file.name.endsWith(".pptx")){
 
 let title=file.name
 .replace(".pptx","")
@@ -191,13 +180,6 @@ let div=document.createElement("div");
 div.className="card";
 
 div.innerHTML=`
-
-<div class="thumb">
-<img src="opengraph-image.png" style="width:100%;height:100%;object-fit:cover;">
-</div>
-
-<div class="cardContent">
-
 <h3>${title}</h3>
 
 <button onclick="viewPPT('${file.name}')">View</button>
@@ -205,26 +187,13 @@ div.innerHTML=`
 <button onclick="presentPPT('${file.name}')">Present</button>
 
 <a href="files/${file.name}" download>Download</a>
-
-</div>
-
 `;
 
 resultsDiv.appendChild(div);
 
-});
-
 }
 
-function searchFiles(){
-
-let query=document.getElementById("searchInput").value.toLowerCase();
-
-let filtered = pptFiles.filter(file =>
-file.name.toLowerCase().includes(query)
-);
-
-displayFiles(filtered);
+});
 
 }
 
@@ -255,8 +224,6 @@ window.open(
 loadFiles();
 
 </script>
+
 </body>
 </html>
-
-
-
