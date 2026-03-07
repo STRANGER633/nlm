@@ -1,86 +1,74 @@
-```html
+html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
-<title>NLM PPT Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NLM Presentation Library</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI, sans-serif;
-}
-
 body{
-min-height:100vh;
-background:linear-gradient(135deg,#ffffff,#e6ddff,#cbb6ff);
-display:flex;
-justify-content:center;
-padding:40px;
-color:#2d1b69;
+font-family:Arial, Helvetica, sans-serif;
+margin:0;
+background:#faf9ff;
 }
 
-.container{
-width:100%;
-max-width:1400px;
-background:rgba(255,255,255,0.85);
-backdrop-filter:blur(12px);
-border-radius:20px;
-padding:40px;
-box-shadow:0 10px 40px rgba(0,0,0,0.1);
-}
+/* HERO SECTION */
 
-h1{
+.hero{
 text-align:center;
+padding:60px 20px;
+background:linear-gradient(135deg,#7c6cff,#b9a9ff);
+color:white;
+}
+
+.hero h1{
 font-size:42px;
 margin-bottom:10px;
 }
 
-.subtitle{
-text-align:center;
-margin-bottom:30px;
-opacity:0.8;
+.hero p{
+font-size:18px;
+margin-bottom:25px;
 }
 
-.searchBox{
-display:flex;
-justify-content:center;
-margin-bottom:20px;
-}
-
-input{
-width:400px;
-padding:12px;
-border-radius:8px;
-border:1px solid #ccc;
+#searchBar{
+width:60%;
+max-width:500px;
+padding:14px 18px;
+border:none;
+border-radius:10px;
 font-size:16px;
+outline:none;
 }
 
-#results{
+/* CARD GRID */
+
+#pptContainer{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-gap:30px;
-margin-top:30px;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:25px;
+padding:40px;
 }
+
+/* CARD */
 
 .card{
 background:white;
-border-radius:14px;
+border-radius:16px;
 overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
 transition:0.3s;
-cursor:pointer;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 .card:hover{
-transform:scale(1.05);
+transform:translateY(-6px);
 }
 
 .thumb{
-height:150px;
+height:180px;
 }
 
 .thumb img{
@@ -90,111 +78,101 @@ object-fit:cover;
 }
 
 .cardContent{
-padding:15px;
+padding:20px;
 }
 
 .cardContent h3{
-font-size:20px;
-font-weight:600;
-margin-bottom:12px;
+font-size:22px;
+margin-bottom:10px;
 }
 
-button{
+.meta{
+font-size:14px;
+color:#777;
+margin-bottom:15px;
+}
+
+/* BUTTONS */
+
+.buttons button,
+.buttons a{
+
 padding:8px 14px;
 border:none;
 border-radius:6px;
-background:#7b5cff;
+background:#7c6cff;
 color:white;
-cursor:pointer;
-margin-right:5px;
-}
-
-button:hover{
-background:#5f43e9;
-}
-
-a{
-padding:8px 14px;
-border-radius:6px;
-background:#ddd;
 text-decoration:none;
-color:black;
+cursor:pointer;
+font-size:14px;
+margin-right:6px;
 }
 
-#viewer{
-margin-top:40px;
-display:none;
+.buttons button:hover,
+.buttons a:hover{
+background:#5c4cff;
 }
 
-iframe{
-width:100%;
-height:550px;
-border:none;
-border-radius:10px;
+/* FUTURE FEATURE (CATEGORIES)
+
+.category{
+display:inline-block;
+padding:4px 8px;
+background:#eee;
+border-radius:5px;
+font-size:12px;
+margin-bottom:10px;
 }
+
+*/
 
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<section class="hero">
 
-<h1>NLM</h1>
-<p class="subtitle">Presentation Library</p>
+<h1>NLM Presentation Library</h1>
+<p>Browse and download presentations</p>
 
-<div class="searchBox">
-<input id="searchInput" placeholder="Search presentations..." onkeyup="searchFiles()">
-</div>
+<input
+type="text"
+id="searchBar"
+placeholder="Search presentations..."
+onkeyup="searchPPT()"
+/>
 
-<div id="results"></div>
+</section>
 
-<div id="viewer">
-<h3>Presentation Viewer</h3>
-<iframe id="pptViewer"></iframe>
-</div>
-
-</div>
+<div id="pptContainer"></div>
 
 <script>
 
-const username="STRANGER633";
-const repo="nlm";
-const folder="files";
+const username = "STRANGER633";   // your github username
+const repo = "nlm";   // your repo name
+const folder = "files";
 
-let pptFiles=[];
+const container = document.getElementById("pptContainer");
 
-async function loadFiles(){
+async function loadPPTs(){
 
-const api=`https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
+const url = `https://api.github.com/repos/${username}/${repo}/contents/${folder}`;
 
-const response=await fetch(api);
-const data=await response.json();
+const response = await fetch(url);
+const data = await response.json();
 
-pptFiles = data.filter(file =>
-file.name.endsWith(".ppt") || file.name.endsWith(".pptx")
-);
+data.forEach(file => {
 
-displayFiles(pptFiles);
+if(file.name.endsWith(".ppt") || file.name.endsWith(".pptx")){
 
-}
+let title = file.name.replace(".pptx","").replace(".ppt","");
 
-function displayFiles(files){
+let div = document.createElement("div");
 
-let resultsDiv=document.getElementById("results");
-resultsDiv.innerHTML="";
-
-files.forEach(file=>{
-
-let title=file.name
-.replace(".pptx","")
-.replace(".ppt","")
-.replaceAll("_"," ");
-
-let div=document.createElement("div");
 div.className="card";
 
-div.innerHTML=`
+div.innerHTML = `
 
 <div class="thumb">
 <img src="opengraph-image.png">
@@ -204,6 +182,12 @@ div.innerHTML=`
 
 <h3>${title}</h3>
 
+<div class="meta">
+PPT Presentation
+</div>
+
+<div class="buttons">
+
 <button onclick="viewPPT('${file.name}')">View</button>
 
 <button onclick="presentPPT('${file.name}')">Present</button>
@@ -212,68 +196,58 @@ div.innerHTML=`
 
 </div>
 
+</div>
+
 `;
 
-resultsDiv.appendChild(div);
+container.appendChild(div);
+
+}
 
 });
 
 }
 
-function searchFiles(){
-
-let query=document.getElementById("searchInput").value.toLowerCase();
-
-let filtered = pptFiles.filter(file =>
-file.name.toLowerCase().includes(query)
-);
-
-displayFiles(filtered);
-
-}
+loadPPTs();
 
 function viewPPT(file){
 
-let viewer=document.getElementById("viewer");
-let frame=document.getElementById("pptViewer");
-
-viewer.style.display="block";
-
-let url=`https://STRANGER633.github.io/nlm/files/${file}`;
-
-frame.src="https://view.officeapps.live.com/op/embed.aspx?src="+encodeURIComponent(url);
+window.open(
+"https://view.officeapps.live.com/op/embed.aspx?src=" +
+location.origin + "/files/" + file
+);
 
 }
 
 function presentPPT(file){
 
-let url=`https://STRANGER633.github.io/nlm/files/${file}`;
-
 window.open(
-"https://view.officeapps.live.com/op/view.aspx?src="+encodeURIComponent(url)+"&wdSlideShow=true",
-"_blank"
+"https://view.officeapps.live.com/op/view.aspx?src=" +
+location.origin + "/files/" + file
 );
 
 }
 
-/* FUTURE FEATURE (CATEGORIES)
+function searchPPT(){
 
-Example folder structure later:
+let input = document.getElementById("searchBar").value.toLowerCase();
+let cards = document.querySelectorAll(".card");
 
-files/
- ├ cybersecurity/
- ├ cloud/
- ├ networking/
+cards.forEach(card => {
 
-We can detect folder names and group presentations
-into categories on the page.
+let title = card.querySelector("h3").innerText.toLowerCase();
 
-*/
+if(title.includes(input)){
+card.style.display="block";
+}else{
+card.style.display="none";
+}
 
-loadFiles();
+});
+
+}
 
 </script>
 
 </body>
 </html>
-```
