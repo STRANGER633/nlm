@@ -8,18 +8,21 @@
 
 <style>
 
+/* BACKGROUND */
+
 body{
-font-family:Arial, Helvetica, sans-serif;
 margin:0;
-background:linear-gradient(135deg,#dcdcdc,#bfbfbf);
-min-height:100vh;
-transition:background 0.3s,color 0.3s;
-}
+font-family:Arial,sans-serif;
 
-/* DARK MODE */
+background:
+linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+url("bckgrd.jpg");
 
-body.dark{
-background:#121212;
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+background-repeat:no-repeat;
+
 color:white;
 }
 
@@ -38,17 +41,11 @@ border-bottom:1px solid rgba(255,255,255,0.4);
 z-index:1000;
 }
 
-body.dark .hero{
-background:rgba(30,30,30,0.9);
-}
-
 .hero h1{
 margin:0;
 font-size:26px;
 flex:1;
 }
-
-/* SEARCH */
 
 #searchBar{
 width:300px;
@@ -59,12 +56,67 @@ outline:none;
 background:rgba(255,255,255,0.85);
 }
 
-/* DARK BUTTON */
-
 #darkToggle{
 cursor:pointer;
 font-size:20px;
 margin-left:auto;
+}
+
+/* DARK MODE */
+
+body.dark{
+color:white;
+}
+
+body.dark .hero{
+background:rgba(20,20,20,0.85);
+}
+
+body.dark #searchBar{
+background:#2a2a2a;
+color:white;
+}
+
+body.dark .buttons button,
+body.dark .buttons a{
+background:#333;
+color:white;
+}
+
+/* TRENDING */
+
+.trending{
+margin:40px;
+padding:30px;
+border:2px solid rgba(255,255,255,0.7);
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(6px);
+}
+
+.trending h2{
+margin-bottom:20px;
+font-size:22px;
+}
+
+#trendingContainer{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+}
+
+/* GOLD GLOW */
+
+.trendingCard{
+border:1px solid rgba(255,215,0,0.7);
+box-shadow:
+0 0 12px rgba(255,215,0,0.45),
+0 0 28px rgba(255,215,0,0.25);
+}
+
+.trendingCard:hover{
+box-shadow:
+0 0 18px rgba(255,215,0,0.65),
+0 0 38px rgba(255,215,0,0.35);
 }
 
 /* GRID */
@@ -79,28 +131,28 @@ padding:40px;
 /* CARD */
 
 .card{
-background:rgba(255,255,255,0.7);
-backdrop-filter:blur(12px);
-border-radius:16px;
-box-shadow:0 8px 30px rgba(0,0,0,0.15);
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.6);
+border-radius:0;
+backdrop-filter:blur(6px);
+transition:transform 0.25s ease, box-shadow 0.3s ease;
 overflow:hidden;
-transition:0.35s;
-opacity:0;
-transform:translateY(30px);
-}
+transform-style:preserve-3d;
 
-body.dark .card{
-background:#1f1f1f;
-}
-
-.card.show{
-opacity:1;
-transform:translateY(0);
+box-shadow:0 0 10px rgba(0,0,0,0.25);
 }
 
 .card:hover{
-transform:scale(1.05) translateY(-5px);
-box-shadow:0 18px 45px rgba(0,0,0,0.3);
+transform:scale(1.05);
+box-shadow:0 0 18px rgba(0,0,0,0.45);
+}
+
+body.dark .card{
+box-shadow:0 0 10px rgba(255,255,255,0.18);
+}
+
+body.dark .card:hover{
+box-shadow:0 0 20px rgba(255,255,255,0.35);
 }
 
 /* THUMB */
@@ -108,7 +160,6 @@ box-shadow:0 18px 45px rgba(0,0,0,0.3);
 .thumb{
 height:180px;
 position:relative;
-overflow:hidden;
 }
 
 .thumb img{
@@ -124,17 +175,13 @@ bottom:0;
 left:0;
 right:0;
 height:70px;
-background:linear-gradient(to top,rgba(0,0,0,0.55),transparent);
+background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);
 }
 
 /* CONTENT */
 
 .cardContent{
 padding:18px;
-}
-
-.cardContent h3{
-margin:0 0 10px 0;
 }
 
 .meta{
@@ -147,7 +194,7 @@ margin-bottom:12px;
 .buttons button,
 .buttons a{
 padding:7px 12px;
-border-radius:8px;
+border-radius:6px;
 border:none;
 background:rgba(255,255,255,0.6);
 cursor:pointer;
@@ -157,10 +204,15 @@ font-size:13px;
 margin-right:5px;
 }
 
-body.dark .buttons button,
-body.dark .buttons a{
-background:#333;
-color:white;
+.likeBtn{
+background:rgba(255,255,255,0.4);
+border:none;
+padding:6px 10px;
+cursor:pointer;
+}
+
+.likeBtn:hover{
+transform:scale(1.1);
 }
 
 /* LOADING */
@@ -171,35 +223,33 @@ font-size:20px;
 padding:60px;
 }
 
-/* FOOTER 
+/* FOOTER */
 
 .footerBar{
-background:rgba(255,255,255,0.65);
-backdrop-filter:blur(12px);
-border-top:1px solid rgba(255,255,255,0.4);
-padding:25px;
-display:flex;
-flex-wrap:wrap;
-justify-content:space-between;
-align-items:center;
-gap:20px;
-}*/
-.footerBar{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-padding:20px;
-
+padding:30px;
 background:#111;
 color:white;
-
 margin-top:40px;
+}
 
+/* STATS BAR */
+
+.statsBar{
+display:flex;
+gap:40px;
+font-size:16px;
+margin-bottom:20px;
+border-bottom:1px solid rgba(255,255,255,0.2);
+padding-bottom:15px;
+}
+
+/* FOOTER CONTENT */
+
+.footerContent{
+display:flex;
+justify-content:space-between;
 flex-wrap:wrap;
 gap:20px;
-
 }
 
 .feedbackBox{
@@ -208,116 +258,24 @@ gap:10px;
 }
 
 .feedbackBox input{
-
 padding:8px;
 border-radius:6px;
 border:none;
 width:200px;
-
 }
 
 .feedbackBox button{
-
 padding:8px 14px;
 border:none;
 border-radius:6px;
-
-background:#4a90e2;
-color:white;
-
-cursor:pointer;
-
-}
-body.dark .footerBar{
-background:#1c1c1c;
-}
-
-.footerInfo{
-font-size:14px;
-line-height:1.6;
-}
-
-/* FEEDBACK */
-
-.feedbackSection{
-display:flex;
-flex-direction:column;
-gap:6px;
-}
-
-.feedbackText{
-font-size:14px;
-font-weight:500;
-}
-
-.feedbackBox{
-display:flex;
-gap:10px;
-}
-
-.feedbackBox input{
-padding:10px;
-border-radius:8px;
-border:none;
-width:220px;
-}
-
-.feedbackBox button{
-padding:10px 14px;
-border:none;
-border-radius:8px;
 background:#4a90e2;
 color:white;
 cursor:pointer;
-}
-
-.feedbackBox button:hover{
-opacity:0.85;
-}
-
-/* TOAST */
-
-#toast{
-position:fixed;
-bottom:25px;
-right:25px;
-background:#333;
-color:white;
-padding:12px 18px;
-border-radius:8px;
-opacity:0;
-pointer-events:none;
-transition:0.4s;
-}
-
-#toast.show{
-opacity:1;
-}
-
-/* SCROLL FADE */
-
-.card.fade{
-opacity:0.25;
-transform:scale(0.96);
 }
 
 </style>
 </head>
-<script>
 
-function sendFeedback(){
-
-const text=document.getElementById("feedbackInput").value;
-
-if(!text.trim()) return;
-
-window.location.href =
-"mailto:intiaakash314@gmail.com?subject=NLM Website Feedback&body="
-+ encodeURIComponent(text);
-
-}
-
-</script>
 <body>
 
 <header class="hero">
@@ -335,39 +293,47 @@ onkeyup="searchPPT()"
 
 </header>
 
+<div class="trending">
+<h2>🔥 Trending Presentations</h2>
+<div id="trendingContainer"></div>
+</div>
+
 <div id="loading">Loading presentations...</div>
 
 <div id="pptContainer"></div>
 
-<!-- FOOTER -->
-
 <footer class="footerBar">
 
-<div class="footerInfo">
+<div class="statsBar">
+
+<div>📁 Presentations: <span id="statFiles">0</span></div>
+<div>❤️ Total Likes: <span id="statLikes">0</span></div>
+<div>💾 Library Size: <span id="statSize">0 MB</span></div>
+
+</div>
+
+<div class="footerContent">
+
+<div>
 <strong>Contact Info</strong><br>
 Mail: noreply@gmail.com<br>
 Contact Number: +91 1234567890
 </div>
 
-<div class="feedbackArea">
+<div>
 
-<div class="feedbackText">
-Help us with your feedback
-</div>
+<div>Help us with your feedback</div>
 
 <div class="feedbackBox">
-
 <input id="feedbackInput" placeholder="Write feedback...">
-
 <button onclick="sendFeedback()">Send</button>
+</div>
 
 </div>
 
 </div>
 
 </footer>
-
-<div id="toast">✔ Feedback message prepared</div>
 
 <script>
 
@@ -376,32 +342,15 @@ const repo="nlm";
 const folder="files";
 
 const container=document.getElementById("pptContainer");
+const trendingContainer=document.getElementById("trendingContainer");
 const loading=document.getElementById("loading");
 
-/* DARK MODE */
-
-const toggle=document.getElementById("darkToggle");
-
-if(localStorage.getItem("theme")=="dark"){
-document.body.classList.add("dark");
-}
-
-toggle.onclick=()=>{
-
-document.body.classList.toggle("dark");
-
-if(document.body.classList.contains("dark")){
-localStorage.setItem("theme","dark");
-}else{
-localStorage.setItem("theme","light");
-}
-
-};
+let totalSize=0;
 
 /* FILE SIZE */
 
 function formatSize(bytes){
-return (bytes/1024/1024).toFixed(2)+" MB";
+return (bytes/1024/1024).toFixed(2);
 }
 
 /* LOAD FILES */
@@ -425,22 +374,37 @@ url:file.download_url,
 size:file.size
 });
 
+totalSize+=file.size;
+
 }
 
 });
 
-files.sort((a,b)=>a.name.localeCompare(b.name));
-
 loading.style.display="none";
 
-files.forEach((file,index)=>{
+files.forEach(file=>createCard(file,container));
+
+updateTrending(files);
+updateStats(files);
+
+}
+
+loadPPTs();
+
+/* CREATE CARD */
+
+function createCard(file,parent){
 
 let title=file.name.replace(".pptx","").replace(".ppt","");
 
 let thumbnail=`https://raw.githubusercontent.com/${username}/${repo}/main/thumbnails/${title}.png`;
 
+let likes=JSON.parse(localStorage.getItem("pptLikes")) || {};
+let likeCount=likes[title] || 0;
+
 let div=document.createElement("div");
-div.className="card";
+
+div.className = parent.id === "trendingContainer" ? "card trendingCard" : "card";
 
 div.innerHTML=`
 
@@ -453,7 +417,7 @@ div.innerHTML=`
 <h3>${title}</h3>
 
 <div class="meta">
-Size: ${formatSize(file.size)}
+Size: ${formatSize(file.size)} MB
 </div>
 
 <div class="buttons">
@@ -462,30 +426,96 @@ Size: ${formatSize(file.size)}
 <button onclick="presentPPT('${file.url}')">Present</button>
 <a href="${file.url}" download>Download</a>
 
+<button class="likeBtn" onclick="toggleLike('${title}',this)">
+❤️ <span class="likeCount">${likeCount}</span>
+</button>
+
 </div>
 
 </div>
 `;
 
-container.appendChild(div);
-
-setTimeout(()=>{
-div.classList.add("show");
-},index*120);
-
-});
+parent.appendChild(div);
 
 }
 
-loadPPTs();
+/* TRENDING */
+
+function updateTrending(files){
+
+let likes=JSON.parse(localStorage.getItem("pptLikes")) || {};
+
+let sorted=[...files].sort((a,b)=>{
+
+let aLikes=likes[a.name.replace(".pptx","").replace(".ppt","")]||0;
+let bLikes=likes[b.name.replace(".pptx","").replace(".ppt","")]||0;
+
+return bLikes-aLikes;
+
+});
+
+trendingContainer.innerHTML="";
+
+sorted.slice(0,3).forEach(file=>createCard(file,trendingContainer));
+
+}
+
+/* STATS */
+
+function updateStats(files){
+
+let likes=JSON.parse(localStorage.getItem("pptLikes")) || {};
+let totalLikes=0;
+
+Object.values(likes).forEach(v=>totalLikes+=v);
+
+document.getElementById("statFiles").innerText=files.length;
+document.getElementById("statLikes").innerText=totalLikes;
+document.getElementById("statSize").innerText=formatSize(totalSize)+" MB";
+
+}
+
+/* DARK MODE */
+
+const toggle=document.getElementById("darkToggle");
+
+if(localStorage.getItem("theme")==="dark"){
+document.body.classList.add("dark");
+}
+
+toggle.onclick=()=>{
+
+document.body.classList.toggle("dark");
+
+if(document.body.classList.contains("dark")){
+localStorage.setItem("theme","dark");
+}else{
+localStorage.setItem("theme","light");
+}
+
+};
+
+/* LIKE */
+
+function toggleLike(title,btn){
+
+let likes=JSON.parse(localStorage.getItem("pptLikes")) || {};
+
+if(!likes[title]) likes[title]=0;
+
+likes[title]++;
+
+localStorage.setItem("pptLikes",JSON.stringify(likes));
+
+location.reload();
+
+}
 
 /* VIEW */
 
 function viewPPT(url){
 window.open("https://view.officeapps.live.com/op/embed.aspx?src="+encodeURIComponent(url));
 }
-
-/* PRESENT */
 
 function presentPPT(url){
 window.open("https://view.officeapps.live.com/op/view.aspx?src="+encodeURIComponent(url));
@@ -508,43 +538,17 @@ card.style.display=title.includes(input) ? "block" : "none";
 
 }
 
-/* SCROLL FADE */
-
-window.addEventListener("scroll",()=>{
-
-const cards=document.querySelectorAll(".card");
-
-cards.forEach(card=>{
-
-const rect=card.getBoundingClientRect();
-
-if(rect.top < 0){
-card.classList.add("fade");
-}else{
-card.classList.remove("fade");
-}
-
-});
-
-});
-
 /* FEEDBACK */
 
 function sendFeedback(){
 
-let text=document.getElementById("feedbackText").value;
+const text=document.getElementById("feedbackInput").value;
 
-if(text.trim()=="") return;
+if(!text.trim()) return;
 
-const toast=document.getElementById("toast");
-
-toast.classList.add("show");
-
-setTimeout(()=>{
-toast.classList.remove("show");
-},3000);
-
-window.location.href=`mailto:intiaakash314@gmail.com?subject=NLM Feedback&body=${encodeURIComponent(text)}`;
+window.location.href =
+"mailto:intiaakash314@gmail.com?subject=NLM Website Feedback&body="
++ encodeURIComponent(text);
 
 }
 
